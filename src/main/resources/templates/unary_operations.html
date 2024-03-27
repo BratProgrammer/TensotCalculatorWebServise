@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tensor Input Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .tensor-input {
+            margin-bottom: 10px;
+        }
+        .dimension-input {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+<h2>Tensor Input Interface</h2>
+
+<div class="tensor-input">
+    <label for="tensor-rank">Tensor Rank:</label>
+    <input type="number" id="tensor-rank" min="1" max="5">
+</div>
+
+<div id="dimensions-container"></div>
+
+<button onclick="generateInputs()">Generate Inputs</button>
+
+<script>
+    function generateInputs() {
+        var rank = document.getElementById('tensor-rank').value;
+        var dimensionsContainer = document.getElementById('dimensions-container');
+        dimensionsContainer.innerHTML = '';
+
+        for (var i = 0; i < rank; i++) {
+            var dimensionInput = document.createElement('div');
+            dimensionInput.className = 'dimension-input';
+            dimensionInput.innerHTML = `
+                <label for="dimension-${i+1}">Dimension ${i+1}:</label>
+                <input type="number" id="dimension-${i+1}" min="1" required>
+            `;
+            dimensionsContainer.appendChild(dimensionInput);
+        }
+    }
+</script>
+</body>
+</html>
