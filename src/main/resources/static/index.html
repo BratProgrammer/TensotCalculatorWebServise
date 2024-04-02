@@ -64,13 +64,18 @@
             countOfRows = Math.pow(2, Math.floor(rank / 2)) * dimension;
         }
         var table = document.createElement('table');
+
+        var id = 0;
+
         for (var i = 0; i < countOfRows; i++) {
             var row = table.insertRow();
             for (var j = 0; j < countOfСolumns; j++) {
+                id++;
                 var cell = row.insertCell();
                 var input = document.createElement('input');
                 input.type = 'text';
                 input.name = 'element_' + i + '_' + j;
+                input.id = 'element_' + id;
                 cell.appendChild(input);
             }
         }
