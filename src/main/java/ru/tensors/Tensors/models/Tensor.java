@@ -6,16 +6,13 @@ import java.util.List;
 public class Tensor {
     private final int rank;
     private final int dimension;
-
-    ArrayList<List> tensorMatrix = new ArrayList<>();
-
-    private org.tensorflow.Tensor tensor;
+    private ArrayList tensorMatrix = new ArrayList<>();
     private int[] elements;
 
     public Tensor(int rank, int dimension) {
         this.rank = rank;
         this.dimension = dimension;
-        createTensorMatrix(rank);
+        this.tensorMatrix = createTensorMatrix(rank);
     }
 
     private ArrayList createTensorMatrix(int rankForRecursion) {
@@ -51,8 +48,13 @@ public class Tensor {
     }
 
     public int getElement(int ... coordinates) {
-
-        //TODO
-        return 0;
+        int rankForRecursion = rank;
+        int index = 0;
+        ArrayList pathOfTensorMatrix = tensorMatrix;
+        while (index < rank - 1) {
+            pathOfTensorMatrix = (ArrayList) pathOfTensorMatrix.get(coordinates[index]);
+            index++;
+        }
+        return (int) pathOfTensorMatrix.get(index);
     }
 }

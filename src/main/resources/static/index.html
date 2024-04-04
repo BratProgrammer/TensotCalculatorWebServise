@@ -59,9 +59,9 @@
             countOfСolumns = dimension;
         } else {
             rank = rank - 1;
-            countOfСolumns =  Math.pow(2, Math.floor(rank / 2)) * dimension;
+            countOfСolumns =  Math.pow(dimension, Math.floor(rank / 2)) * dimension;
             rank = rank - 1;
-            countOfRows = Math.pow(2, Math.floor(rank / 2)) * dimension;
+            countOfRows = Math.pow(dimension, Math.floor(rank / 2)) * dimension;
         }
         var table = document.createElement('table');
 

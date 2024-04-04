@@ -14,7 +14,11 @@ public class TensorsApplication {
 		SpringApplication.run(TensorsApplication.class, args);
 		Tensor tensor = new Tensor(3, 3);
 
-		System.out.println(tensor);
+		try {
+			System.out.println(tensor.getElement(0, 0, 0));
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 
 	}
 
