@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tensor {
-    private final int rank;
-    private final int dimension;
+    private int rank;
+    private int dimension;
     private ArrayList tensorMatrix = new ArrayList<>();
     private int[] elements;
 
-    public Tensor(int rank, int dimension) {
+    public void init(int rank, int dimension) {
         this.rank = rank;
         this.dimension = dimension;
         this.tensorMatrix = createTensorMatrix(rank);
@@ -45,16 +45,27 @@ public class Tensor {
 
     public void setElementsArray(int[] elements) {
         this.elements = elements;
+
+        //TODO
     }
 
     public int getElement(int ... coordinates) {
-        int rankForRecursion = rank;
-        int index = 0;
+        int coordinateIndex = 0;
         ArrayList pathOfTensorMatrix = tensorMatrix;
-        while (index < rank - 1) {
-            pathOfTensorMatrix = (ArrayList) pathOfTensorMatrix.get(coordinates[index]);
-            index++;
+        while (coordinateIndex < rank - 1) {
+            pathOfTensorMatrix = (ArrayList) pathOfTensorMatrix.get(coordinates[coordinateIndex]);
+            coordinateIndex++;
         }
-        return (int) pathOfTensorMatrix.get(index);
+        return (int) pathOfTensorMatrix.get(coordinateIndex);
+    }
+
+    public void setElement(int value ,int ... coordinates) {
+        int coordinateIndex = 0;
+        ArrayList pathOfTensorMatrix = tensorMatrix;
+        while (coordinateIndex < rank - 1) {
+            pathOfTensorMatrix = (ArrayList) pathOfTensorMatrix.get(coordinates[coordinateIndex]);
+            coordinateIndex++;
+        }
+        pathOfTensorMatrix.set(coordinates[coordinateIndex], value);
     }
 }

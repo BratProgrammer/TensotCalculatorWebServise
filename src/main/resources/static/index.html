@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,7 +36,9 @@
 
 <button onclick="createTensor()">Create Tensor</button>
 
-<div id="tensorInput"></div>
+<div id="tensorInput">
+    <table id="tensorTable" ></table>
+</div>
 
 <script>
 
@@ -46,14 +48,16 @@
         var tensorInput = document.getElementById('tensorInput');
         tensorInput.innerHTML = '';
 
-        var table = document.createElement('table');
+        var table = document.getElementById('tensorTable');
+
+
 
         var countOfRows = 0;
         var countOfСolumns = 0;
         var c = countOfСolumns;
         if (rank == 1) {
             countOfRows = 1;
-            countOfСolumns = 1;
+            countOfСolumns = dimension;
         } else if (rank == 2) {
             countOfRows = dimension;
             countOfСolumns = dimension;
@@ -63,7 +67,6 @@
             rank = rank - 1;
             countOfRows = Math.pow(dimension, Math.floor(rank / 2)) * dimension;
         }
-        var table = document.createElement('table');
 
         var id = 0;
 
