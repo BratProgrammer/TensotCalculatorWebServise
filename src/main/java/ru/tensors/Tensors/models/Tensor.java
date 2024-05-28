@@ -39,10 +39,6 @@ public class Tensor {
         return rank;
     }
 
-    public int[] getElementsArray() {
-        return elements;
-    }
-
     public void setElementsArray(int[] elements) {
         this.elements = elements;
 
@@ -68,4 +64,6 @@ public class Tensor {
         }
         pathOfTensorMatrix.set(coordinates[coordinateIndex], value);
     }
+
+    public int[] getElements() { return elements; }
 }

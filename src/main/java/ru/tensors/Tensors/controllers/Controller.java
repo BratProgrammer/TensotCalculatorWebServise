@@ -17,8 +17,5 @@ public class Controller {
     @RequestMapping(value = "/set_tensor")
     public void setTensor() {
         System.out.println("Success");
-
-
-
     }
 }

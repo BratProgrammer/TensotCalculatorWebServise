@@ -8,10 +8,13 @@ public class OperationsWithTensors {
     public Tensor sum(Tensor tensor1, Tensor tensor2) {
         Tensor result = new Tensor();
         if (tensor1.getRank() == tensor2.getRank() && tensor1.getDimension() == tensor2.getDimension()) {
-
+            result.init(tensor2.getRank(), tensor1.getDimension());
+            int[] elements = new int[tensor1.getElements().length];
+            for (int i = 0; i < tensor1.getElements().length; i++) {
+                elements[i] = tensor1.getElements()[i] + tensor2.getElements()[i];
+            }
+            result.setElementsArray(elements);
         }
-
-
         return result;
     }
 
