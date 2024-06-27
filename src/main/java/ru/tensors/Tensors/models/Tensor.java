@@ -2,12 +2,14 @@ package ru.tensors.Tensors.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Tensor {
     private int rank;
     private int dimension;
     private ArrayList tensorMatrix = new ArrayList<>();
-    private int[] elements;
+
+    //private int[] elements;
 
     public void init(int rank, int dimension) {
         this.rank = rank;
@@ -39,23 +41,20 @@ public class Tensor {
         return rank;
     }
 
-    public void setElementsArray(int[] elements) {
-        this.elements = elements;
 
-        //TODO
-    }
 
-    public int getElement(int ... coordinates) {
+    public double getElement(int[] coordinates) {
         int coordinateIndex = 0;
         ArrayList pathOfTensorMatrix = tensorMatrix;
         while (coordinateIndex < rank - 1) {
             pathOfTensorMatrix = (ArrayList) pathOfTensorMatrix.get(coordinates[coordinateIndex]);
             coordinateIndex++;
         }
-        return (int) pathOfTensorMatrix.get(coordinateIndex);
+        return (double) pathOfTensorMatrix.get(coordinates[coordinateIndex]);
     }
 
-    public void setElement(int value ,int ... coordinates) {
+
+    public void setElement(double value, int[] coordinates) {
         int coordinateIndex = 0;
         ArrayList pathOfTensorMatrix = tensorMatrix;
         while (coordinateIndex < rank - 1) {
@@ -65,5 +64,12 @@ public class Tensor {
         pathOfTensorMatrix.set(coordinates[coordinateIndex], value);
     }
 
-    public int[] getElements() { return elements; }
+
+    /*
+    public int[] getElementsAsArray() { return elements; }
+
+    public void setElementsArray(int[] elements) {
+        this.elements = elements;
+    }
+    */
 }

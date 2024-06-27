@@ -36,8 +36,18 @@
 
 <button onclick="createTensor()">Create Tensor</button>
 
-<div id="tensorInput">
-    <table id="tensorTable" ></table>
+<div id="tensorInput1">
+    <table id="tensorTable1"></table>
+</div>
+
+<div id="bin_operations_div">
+    <button>+</button>
+    <button>-</button>
+    <button>*</button>
+</div>
+
+<div id="tensorInput2">
+    <table id="tensorTable2"></table>
 </div>
 
 <script>
@@ -45,12 +55,11 @@
     function createTensor() {
         var rank = parseInt(document.getElementById('rank').value);
         var dimension = parseInt(document.getElementById('dimension').value);
-        var tensorInput = document.getElementById('tensorInput');
+        var tensorInput1 = document.getElementById('tensorInput1');
+        var tensorInput2 = document.getElementById('tensorInput2');
         tensorInput.innerHTML = '';
 
         var table = document.getElementById('tensorTable');
-
-
 
         var countOfRows = 0;
         var countOfСolumns = 0;
@@ -77,12 +86,38 @@
                 var cell = row.insertCell();
                 var input = document.createElement('input');
                 input.type = 'text';
-                input.name = 'element_' + i + '_' + j;
-                input.id = 'element_' + id;
+                input.name = 't1_element_' + i + '_' + j;
+                input.id = 't1_element_' + id;
                 cell.appendChild(input);
             }
         }
-        tensorInput.appendChild(table);
+        tensorInput1.appendChild(table);
+
+        for (var i = 0; i < countOfRows; i++) {
+            var row = table.insertRow();
+            for (var j = 0; j < countOfСolumns; j++) {
+                id++;
+                var cell = row.insertCell();
+                var input = document.createElement('input');
+                input.type = 'text';
+                input.name = 't2_element_' + i + '_' + j;
+                input.id = 't2_element_' + id;
+                cell.appendChild(input);
+            }
+        }
+        tensorInput2.appendChild(table);
+    }
+
+    function plus() {
+        //TODO
+    }
+
+    function minus() {
+        //TODO
+    }
+
+    function multiply() {
+
     }
 </script>
 

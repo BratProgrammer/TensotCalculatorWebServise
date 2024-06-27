@@ -7,9 +7,7 @@ import ru.tensors.Tensors.models.Tensor;
 public class Configuration {
 
     @Bean("Tensor1")
-    public Tensor tensor1() {
-        return new Tensor();
-    }
+    public Tensor tensor1() { return new Tensor(); }
 
     @Bean("Tensor2")
     public Tensor tensor2() {

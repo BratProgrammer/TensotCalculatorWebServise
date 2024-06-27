@@ -1,21 +1,25 @@
 package ru.tensors.Tensors.controllers;
 
-import ch.qos.logback.core.model.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import ru.tensors.Tensors.controllers.records.BinOperationTensorsRequest;
+import ru.tensors.Tensors.controllers.records.UnaryOperationTensorRequest;
 
-@org.springframework.stereotype.Controller
+@RestController
+@RequestMapping("/api/v1/tensors")
 public class Controller {
 
-    @GetMapping("/")
-    private String mainPage() {
-        return "unary_operations";
+    @PostMapping("/unary_operation/calculate")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void unaryOperationMapping(@Valid @RequestBody UnaryOperationTensorRequest request) {
+        //TODO
     }
 
-    @RequestMapping(value = "/set_tensor")
-    public void setTensor() {
-        System.out.println("Success");
+    @PostMapping("/binary_operation/calculate")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void binaryOperationMapping(@Valid @RequestBody BinOperationTensorsRequest request) {
+        //TODO
     }
 }
+

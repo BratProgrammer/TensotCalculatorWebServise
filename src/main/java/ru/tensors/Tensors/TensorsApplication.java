@@ -4,34 +4,48 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import ru.tensors.Tensors.configuration.Configuration;
 import ru.tensors.Tensors.models.Tensor;
+import ru.tensors.Tensors.service.OperationsWithTensors;
 
 @SpringBootApplication
 public class TensorsApplication {
 
-	public static void main(String[] args) {
+	static ApplicationContext context;
+
+	public static void main(String[] args) throws Exception {
 		SpringApplication.run(TensorsApplication.class, args);
 
-		ApplicationContext context = new AnnotationConfigApplicationContext(Configuration.class);
+		context = new AnnotationConfigApplicationContext(Configuration.class);
 
-		OperationsWithTensors operations = new OperationsWithTensors();
+		var operations = new OperationsWithTensors();
 
-		Tensor tensor = (Tensor) context.getBean("Tensor1");
+		var tensor1 = (Tensor) context.getBean("Tensor1");
+		var tensor2 = (Tensor) context.getBean("Tensor2");
 
-		tensor.init(2, 2);
-		tensor.setElement(1, 0, 0);
-		tensor.setElement(2, 0, 1);
-		tensor.setElement(3, 1, 0);
-		tensor.setElement(4, 1, 1);
+		tensor1.init(3, 2);
+		tensor1.setElement(1, new int[]{0, 0, 0});
+		tensor1.setElement(2, new int[]{0, 0, 1});
+		tensor1.setElement(3, new int[]{0, 1, 0});
+		tensor1.setElement(4, new int[]{0, 1, 1});
+		tensor1.setElement(5, new int[]{1, 0, 0});
+		tensor1.setElement(6, new int[]{1, 0, 1});
+		tensor1.setElement(7, new int[]{1, 1, 0});
+		tensor1.setElement(8, new int[]{1, 1, 1});
+		tensor2.init(3, 2);
+		tensor2.setElement(1, new int[]{0, 0, 0});
+		tensor2.setElement(2, new int[]{0, 0, 1});
+		tensor2.setElement(3, new int[]{0, 1, 0});
+		tensor2.setElement(4, new int[]{0, 1, 1});
+		tensor2.setElement(5, new int[]{1, 0, 0});
+		tensor2.setElement(6, new int[]{1, 0, 1});
+		tensor2.setElement(7, new int[]{1, 1, 0});
+		tensor2.setElement(8, new int[]{1, 1, 1});
 
-		tensor = operations.symmetrize(tensor);
 
-		System.out.println(tensor.getElement(0, 0) + " " + tensor.getElement(0, 1));
-		System.out.println(tensor.getElement(1, 0) + " " + tensor.getElement(1, 1));
+		var result = operations.subtraction(tensor1, tensor2);
+
+		System.out.println(result);
 
 	}
 
