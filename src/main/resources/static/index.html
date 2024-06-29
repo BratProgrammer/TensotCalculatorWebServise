@@ -25,16 +25,16 @@
 <h2>Tensor Input Interface</h2>
 
 <div>
-    <label for="rank">Tensor Rank:</label>
+    <label for="rank">Ранг тензора:</label>
     <input type="number" id="rank" min="1" max="6" value="2">
 </div>
 
 <div>
-    <label for="dimension">Tensor Dimension:</label>
+    <label for="dimension">Размерность пространства:</label>
     <input type="number" id="dimension" min="1" value="3">
 </div>
 
-<button onclick="createTensor()">Create Tensor</button>
+<button onclick="createTensor()">Создать тензор</button>
 
 <div id="tensorInput1">
     <table id="tensorTable1"></table>
@@ -57,9 +57,11 @@
         var dimension = parseInt(document.getElementById('dimension').value);
         var tensorInput1 = document.getElementById('tensorInput1');
         var tensorInput2 = document.getElementById('tensorInput2');
-        tensorInput.innerHTML = '';
 
-        var table = document.getElementById('tensorTable');
+
+        var table = document.getElementById('tensorTable1');
+        table.innerHTML = '';
+        tensorInput1.innerHTML = '';
 
         var countOfRows = 0;
         var countOfСolumns = 0;
@@ -92,6 +94,10 @@
             }
         }
         tensorInput1.appendChild(table);
+
+        table = document.getElementById('tensorTable2');
+        table.innerHTML = '';
+        tensorInput2.innerHTML = '';
 
         for (var i = 0; i < countOfRows; i++) {
             var row = table.insertRow();

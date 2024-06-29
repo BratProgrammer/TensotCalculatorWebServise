@@ -18,10 +18,10 @@ public class TensorsApplication {
 
 		context = new AnnotationConfigApplicationContext(Configuration.class);
 
-		var operations = new OperationsWithTensors();
-
 		var tensor1 = (Tensor) context.getBean("Tensor1");
 		var tensor2 = (Tensor) context.getBean("Tensor2");
+
+		var operations = new OperationsWithTensors();
 
 		tensor1.init(3, 2);
 		tensor1.setElement(1, new int[]{0, 0, 0});
@@ -41,11 +41,6 @@ public class TensorsApplication {
 		tensor2.setElement(6, new int[]{1, 0, 1});
 		tensor2.setElement(7, new int[]{1, 1, 0});
 		tensor2.setElement(8, new int[]{1, 1, 1});
-
-
-		var result = operations.subtraction(tensor1, tensor2);
-
-		System.out.println(result);
 
 	}
 
