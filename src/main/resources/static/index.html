@@ -25,39 +25,55 @@
 <h2>Tensor Input Interface</h2>
 
 <div>
-    <label for="rank">Ранг тензора:</label>
-    <input type="number" id="rank" min="1" max="6" value="2">
+    <label for="t1_rank">Ранг тензора:</label>
+    <input type="number" id="t1_rank" min="1" aria-valuemax="6" max="6" value="2">
 </div>
 
 <div>
-    <label for="dimension">Размерность пространства:</label>
-    <input type="number" id="dimension" min="1" value="3">
+    <label for="t1_dimension">Размерность пространства:</label>
+    <input type="number" id="t1_dimension" min="1" value="3">
 </div>
 
-<button onclick="createTensor()">Создать тензор</button>
+<button onclick="createTensor1()">Создать тензор</button>
 
 <div id="tensorInput1">
     <table id="tensorTable1"></table>
 </div>
 
 <div id="bin_operations_div">
-    <button>+</button>
+    <button onclick="plus()">+</button>
     <button>-</button>
     <button>*</button>
 </div>
+
+<div>
+    <label for="t2_rank">Ранг тензора:</label>
+    <input type="number" id="t2_rank" min="1" aria-valuemax="6" max="6" value="2">
+</div>
+
+<div>
+    <label for="t2_dimension">Размерность пространства:</label>
+    <input type="number" id="t2_dimension" min="1" value="3">
+</div>
+
+<button onclick="createTensor2()">Создать тензор</button>
 
 <div id="tensorInput2">
     <table id="tensorTable2"></table>
 </div>
 
+<h2>=</h2>
+
+<div id="tensorOutput">
+    <table id="tensorOutputTable"></table>
+</div>
+
 <script>
 
-    function createTensor() {
-        var rank = parseInt(document.getElementById('rank').value);
-        var dimension = parseInt(document.getElementById('dimension').value);
+    function createTensor1() {
+        var rank = parseInt(document.getElementById('t1_rank').value);
+        var dimension = parseInt(document.getElementById('t1_dimension').value);
         var tensorInput1 = document.getElementById('tensorInput1');
-        var tensorInput2 = document.getElementById('tensorInput2');
-
 
         var table = document.getElementById('tensorTable1');
         table.innerHTML = '';
@@ -94,10 +110,34 @@
             }
         }
         tensorInput1.appendChild(table);
+    }
+
+    function createTensor2() {
+        var rank = parseInt(document.getElementById('t2_rank').value);
+        var dimension = parseInt(document.getElementById('t2_dimension').value);
+        var tensorInput2 = document.getElementById('tensorInput2');
 
         table = document.getElementById('tensorTable2');
         table.innerHTML = '';
         tensorInput2.innerHTML = '';
+
+        var countOfRows = 0;
+        var countOfСolumns = 0;
+        var c = countOfСolumns;
+        if (rank == 1) {
+            countOfRows = 1;
+            countOfСolumns = dimension;
+        } else if (rank == 2) {
+            countOfRows = dimension;
+            countOfСolumns = dimension;
+        } else {
+            rank = rank - 1;
+            countOfСolumns =  Math.pow(dimension, Math.floor(rank / 2)) * dimension;
+            rank = rank - 1;
+            countOfRows = Math.pow(dimension, Math.floor(rank / 2)) * dimension;
+        }
+
+        id = 0;
 
         for (var i = 0; i < countOfRows; i++) {
             var row = table.insertRow();
@@ -115,7 +155,56 @@
     }
 
     function plus() {
-        //TODO
+
+        var t1_rank = parseInt(document.getElementById('t1_rank').value);
+        var t1_dimension = parseInt(document.getElementById('t1_dimension').value);
+        var t2_rank = parseInt(document.getElementById('t2_rank').value);
+        var t2_dimension = parseInt(document.getElementById('t2_dimension').value);
+
+        if (t1_rank == t2_rank && t1_dimension == t2_dimension) {
+            var countOfElements = Math.pow(t1_dimension, t1_rank);
+
+            let tensor1_elements = [];
+            let tensor2_elements = [];
+
+            for (var id = 1; id <= countOfElements; id++) {
+                var str_id = 't1_element_' + id;
+                var element = parseFloat(document.getElementById(str_id).value);
+                tensor1_elements.push(element);
+            }
+
+            for (var id = 1; id <= countOfElements; id++) {
+                var str_id = 't2_element_' + id;
+                var element = parseFloat(document.getElementById(str_id).value);
+                tensor2_elements.push(element);
+            }
+
+            var xhr = new XMLHttpRequest();
+            var url = "http://localhost:8080/api/v1/tensors/binary_operation/plus";
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.onload = function() {
+                if (xhr.status != 200) { // анализируем HTTP-статус ответа, если статус не 200, то произошла ошибка
+                    alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
+                } else { // если всё прошло гладко, выводим результат
+                    alert(xhr.response); // response -- это ответ сервера
+                    //TODO
+                }
+            }
+
+            var reqestBody = JSON.stringify({
+                "rankOfTensor1": t1_rank,
+                "dimensionOfTensor1": t1_dimension,
+                "rankOfTensor2": t2_rank,
+                "dimensionOfTensor2": t2_dimension,
+                "elementsOfTensor1": tensor1_elements,
+                "elementsOfTensor2": tensor2_elements
+            })
+
+            xhr.send(reqestBody);
+        }
     }
 
     function minus() {
@@ -123,7 +212,48 @@
     }
 
     function multiply() {
+        //TODO
+    }
 
+    function setResult(rank, dimension, tensor_elements) {
+        var tensorOutput = document.getElementById('tensorOutput');
+        var table = document.getElementById('tensorOutputTensor');
+
+        table.innerHTML = '';
+        tensorOutput.innerHTML = '';
+
+        var countOfRows = 0;
+        var countOfСolumns = 0;
+        var c = countOfСolumns;
+        if (rank == 1) {
+            countOfRows = 1;
+            countOfСolumns = dimension;
+        } else if (rank == 2) {
+            countOfRows = dimension;
+            countOfСolumns = dimension;
+        } else {
+            rank = rank - 1;
+            countOfСolumns =  Math.pow(dimension, Math.floor(rank / 2)) * dimension;
+            rank = rank - 1;
+            countOfRows = Math.pow(dimension, Math.floor(rank / 2)) * dimension;
+        }
+
+        var id = 0;
+
+        for (var i = 0; i < countOfRows; i++) {
+            var row = table.insertRow();
+            for (var j = 0; j < countOfСolumns; j++) {
+                id++;
+                var cell = row.insertCell();
+                var input = document.createElement('input');
+                input.type = 'text';
+                input.name = 't_out_element_' + i + '_' + j;
+                input.id = 't_out_element_' + id;
+                input.text = tensor_elements[id - 1];
+                cell.appendChild(input);
+            }
+        }
+        tensorOutput.appendChild(table);
     }
 </script>
 

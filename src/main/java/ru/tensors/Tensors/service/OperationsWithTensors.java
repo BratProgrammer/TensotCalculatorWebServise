@@ -29,9 +29,9 @@ public class OperationsWithTensors {
     }
 
     public Tensor sum(Tensor tensor1, Tensor tensor2) throws Exception {
-        var result = new Tensor();
+
         if (tensor1.getRank() == tensor2.getRank() && tensor1.getDimension() == tensor2.getDimension()) {
-            result.init(tensor1.getRank(), tensor1.getDimension());
+            var result = new Tensor(tensor1.getRank(), tensor1.getDimension());
 
             int[] coordinates = new int[tensor1.getRank()];
             int countOfElements = (int) Math.pow(result.getDimension(), result.getRank());
@@ -40,20 +40,20 @@ public class OperationsWithTensors {
                 result.setElement(tensor1.getElement(coordinates) + tensor2.getElement(coordinates), coordinates);
                 incrementCoordinates(coordinates, result.getDimension());
             }
-
+            return result;
         } else {
             throw new Exception("Tensors have different formats\n" +
                     "Tensor_1: rank = " + tensor1.getRank() + ", dimention = " + tensor1.getDimension() + "\n" +
                     "Tensor_2: rank = " + tensor2.getRank() + ", dimention = " + tensor2.getDimension() + "\n"
             );
         }
-        return result;
+
     }
 
     public Tensor subtraction(Tensor tensor1, Tensor tensor2) throws Exception {
-        var result = new Tensor();
+
         if (tensor1.getRank() == tensor2.getRank() && tensor1.getDimension() == tensor2.getDimension()) {
-            result.init(tensor1.getRank(), tensor1.getDimension());
+            var result = new Tensor(tensor1.getRank(), tensor1.getDimension());
 
             int[] coordinates = new int[tensor1.getRank()];
             int countOfElements = result.getDimension() ^ result.getRank();
@@ -62,14 +62,14 @@ public class OperationsWithTensors {
                 result.setElement(tensor1.getElement(coordinates) - tensor2.getElement(coordinates), coordinates);
                 incrementCoordinates(coordinates, result.getDimension());
             }
-
+            return result;
         } else {
             throw new Exception("Tensors have different formats\n" +
                     "Tensor_1: rank = " + tensor1.getRank() + ", dimention = " + tensor1.getDimension() + "\n" +
                     "Tensor_2: rank = " + tensor2.getRank() + ", dimention = " + tensor2.getDimension() + "\n"
             );
         }
-        return result;
+
     }
 
     private double getSymmetrizedElement(int[] indexes, Tensor tensor, int index) {
@@ -123,8 +123,7 @@ public class OperationsWithTensors {
         int rank = tensor.getRank();
         int dimension = tensor.getDimension();
 
-        var resultTensor = new Tensor();
-        resultTensor.init(rank, dimension);
+        var resultTensor = new Tensor(rank, dimension);
         double element = 0;
         int[] coordinates = new int[]{};
         switch (rank) {

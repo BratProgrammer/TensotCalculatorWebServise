@@ -2,16 +2,13 @@ package ru.tensors.Tensors.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Tensor {
     private int rank;
     private int dimension;
     private ArrayList tensorMatrix = new ArrayList<>();
 
-    //private int[] elements;
-
-    public void init(int rank, int dimension) {
+    public Tensor(int rank, int dimension) {
         this.rank = rank;
         this.dimension = dimension;
         this.tensorMatrix = createTensorMatrix(rank);
@@ -63,13 +60,4 @@ public class Tensor {
         }
         pathOfTensorMatrix.set(coordinates[coordinateIndex], value);
     }
-
-
-    /*
-    public int[] getElementsAsArray() { return elements; }
-
-    public void setElementsArray(int[] elements) {
-        this.elements = elements;
-    }
-    */
 }
