@@ -1,9 +1,9 @@
 package ru.tensors.Tensors.controllers.data_classes;
 
 public class ResultResponse {
-    int rank;
-    int dimension;
-    double[] tensorElements;
+    private int rank;
+    private int dimension;
+    private double[] tensorElements;
 
     public ResultResponse(int rank, int dimension, double[] tensorElements) {
         this.rank = rank;

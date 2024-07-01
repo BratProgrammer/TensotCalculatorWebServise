@@ -1,9 +1,9 @@
 package ru.tensors.Tensors.controllers.data_classes;
 
 public class UnaryOperationTensorRequest {
-    int rank;
-    int dimension;
-    double[] tensor_elements;
+    private int rank;
+    private int dimension;
+    private double[] tensorElements;
 
     public int getRank() {
         return rank;
@@ -13,8 +13,8 @@ public class UnaryOperationTensorRequest {
         return dimension;
     }
 
-    public double[] getTensor_elements() {
-        return tensor_elements;
+    public double[] getTensorElements() {
+        return tensorElements;
     }
 
     public void setRank(int rank) {
@@ -25,7 +25,7 @@ public class UnaryOperationTensorRequest {
         this.dimension = dimension;
     }
 
-    public void setTensor_elements(double[] tensor_elements) {
-        this.tensor_elements = tensor_elements;
+    public void setTensorElements(double[] tensorElements) {
+        this.tensorElements = tensorElements;
     }
 }

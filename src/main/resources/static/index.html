@@ -42,7 +42,7 @@
 
 <div id="bin_operations_div">
     <button onclick="plus()">+</button>
-    <button>-</button>
+    <button onclick="minus()">-</button>
     <button>*</button>
 </div>
 
@@ -73,11 +73,9 @@
     function createTensor1() {
         var rank = parseInt(document.getElementById('t1_rank').value);
         var dimension = parseInt(document.getElementById('t1_dimension').value);
-        var tensorInput1 = document.getElementById('tensorInput1');
 
         var table = document.getElementById('tensorTable1');
         table.innerHTML = '';
-        tensorInput1.innerHTML = '';
 
         var countOfRows = 0;
         var countOfСolumns = 0;
@@ -109,17 +107,14 @@
                 cell.appendChild(input);
             }
         }
-        tensorInput1.appendChild(table);
     }
 
     function createTensor2() {
         var rank = parseInt(document.getElementById('t2_rank').value);
         var dimension = parseInt(document.getElementById('t2_dimension').value);
-        var tensorInput2 = document.getElementById('tensorInput2');
 
         table = document.getElementById('tensorTable2');
         table.innerHTML = '';
-        tensorInput2.innerHTML = '';
 
         var countOfRows = 0;
         var countOfСolumns = 0;
@@ -151,33 +146,15 @@
                 cell.appendChild(input);
             }
         }
-        tensorInput2.appendChild(table);
     }
 
     function plus() {
-
         var t1_rank = parseInt(document.getElementById('t1_rank').value);
         var t1_dimension = parseInt(document.getElementById('t1_dimension').value);
         var t2_rank = parseInt(document.getElementById('t2_rank').value);
         var t2_dimension = parseInt(document.getElementById('t2_dimension').value);
 
         if (t1_rank == t2_rank && t1_dimension == t2_dimension) {
-            var countOfElements = Math.pow(t1_dimension, t1_rank);
-
-            let tensor1_elements = [];
-            let tensor2_elements = [];
-
-            for (var id = 1; id <= countOfElements; id++) {
-                var str_id = 't1_element_' + id;
-                var element = parseFloat(document.getElementById(str_id).value);
-                tensor1_elements.push(element);
-            }
-
-            for (var id = 1; id <= countOfElements; id++) {
-                var str_id = 't2_element_' + id;
-                var element = parseFloat(document.getElementById(str_id).value);
-                tensor2_elements.push(element);
-            }
 
             var xhr = new XMLHttpRequest();
             var url = "http://localhost:8080/api/v1/tensors/binary_operation/plus";
@@ -189,38 +166,138 @@
                 if (xhr.status != 200) { // анализируем HTTP-статус ответа, если статус не 200, то произошла ошибка
                     alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
                 } else { // если всё прошло гладко, выводим результат
-                    alert(xhr.response); // response -- это ответ сервера
-                    //TODO
+                    setResult(JSON.parse(xhr.response));
                 }
             }
 
-            var reqestBody = JSON.stringify({
-                "rankOfTensor1": t1_rank,
-                "dimensionOfTensor1": t1_dimension,
-                "rankOfTensor2": t2_rank,
-                "dimensionOfTensor2": t2_dimension,
-                "elementsOfTensor1": tensor1_elements,
-                "elementsOfTensor2": tensor2_elements
-            })
+            var reqestBody = getBinReqestJsonData();
 
             xhr.send(reqestBody);
         }
     }
 
     function minus() {
-        //TODO
+        var t1_rank = parseInt(document.getElementById('t1_rank').value);
+        var t1_dimension = parseInt(document.getElementById('t1_dimension').value);
+        var t2_rank = parseInt(document.getElementById('t2_rank').value);
+        var t2_dimension = parseInt(document.getElementById('t2_dimension').value);
+
+        if (t1_rank == t2_rank && t1_dimension == t2_dimension) {
+
+
+            var xhr = new XMLHttpRequest();
+            var url = "http://localhost:8080/api/v1/tensors/binary_operation/minus";
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.onload = function() {
+                if (xhr.status != 200) { // анализируем HTTP-статус ответа, если статус не 200, то произошла ошибка
+                    alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
+                } else { // если всё прошло гладко, выводим результат
+                    setResult(JSON.parse(xhr.response));
+                }
+            }
+
+            var reqestBody = getBinReqestJsonData();
+
+            xhr.send(reqestBody);
+        }
     }
 
     function multiply() {
         //TODO
     }
 
-    function setResult(rank, dimension, tensor_elements) {
-        var tensorOutput = document.getElementById('tensorOutput');
-        var table = document.getElementById('tensorOutputTensor');
+    function symmetrize() {
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:8080/api/v1/tensors/unary_operation/symmetrize";
+
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onload = function() {
+            if (xhr.status != 200) { // анализируем HTTP-статус ответа, если статус не 200, то произошла ошибка
+                alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
+            } else { // если всё прошло гладко, выводим результат
+                setResult(JSON.parse(xhr.response));
+            }
+        }
+
+        var reqestBody = getUnaryReqestJsonData();
+
+        xhr.send(reqestBody);
+    }
+
+    function asymmetrize() {
+        //TODO
+    }
+
+    function getBinReqestJsonData() {
+        var t1_rank = parseInt(document.getElementById('t1_rank').value);
+        var t1_dimension = parseInt(document.getElementById('t1_dimension').value);
+        var t2_rank = parseInt(document.getElementById('t2_rank').value);
+        var t2_dimension = parseInt(document.getElementById('t2_dimension').value);
+
+        var countOfElements = Math.pow(t1_dimension, t1_rank);
+
+        let tensor1_elements = [];
+        let tensor2_elements = [];
+
+        for (var id = 1; id <= countOfElements; id++) {
+            var str_id = 't1_element_' + id;
+            var element = parseFloat(document.getElementById(str_id).value);
+            tensor1_elements.push(element);
+        }
+
+        for (var id = 1; id <= countOfElements; id++) {
+            var str_id = 't2_element_' + id;
+            var element = parseFloat(document.getElementById(str_id).value);
+            tensor2_elements.push(element);
+        }
+
+        var reqestBody = JSON.stringify({
+            "rankOfTensor1": t1_rank,
+            "dimensionOfTensor1": t1_dimension,
+            "rankOfTensor2": t2_rank,
+            "dimensionOfTensor2": t2_dimension,
+            "elementsOfTensor1": tensor1_elements,
+            "elementsOfTensor2": tensor2_elements
+        });
+
+        return reqestBody;
+    }
+
+    function getUnaryReqestJsonData() {
+        var t1_rank = parseInt(document.getElementById('t1_rank').value);
+        var t1_dimension = parseInt(document.getElementById('t1_dimension').value);
+        var countOfElements = Math.pow(t1_dimension, t1_rank);
+
+        let tensor1_elements = [];
+
+        for (var id = 1; id <= countOfElements; id++) {
+            var str_id = 't1_element_' + id;
+            var element = parseFloat(document.getElementById(str_id).value);
+            tensor1_elements.push(element);
+        }
+
+        var reqestBody = JSON.stringify({
+            "rank": t1_rank,
+            "dimension": t1_dimension,
+            "tensorElements": tensor1_elements
+        });
+
+        return reqestBody;
+    }
+
+    function setResult(response) {
+        var rank = response["rank"];
+        var dimension = response["dimension"];
+        var tensorElements = response["tensorElements"];
+
+        var table = document.getElementById('tensorOutputTable');
 
         table.innerHTML = '';
-        tensorOutput.innerHTML = '';
 
         var countOfRows = 0;
         var countOfСolumns = 0;
@@ -249,11 +326,10 @@
                 input.type = 'text';
                 input.name = 't_out_element_' + i + '_' + j;
                 input.id = 't_out_element_' + id;
-                input.text = tensor_elements[id - 1];
+                input.value = tensorElements[id - 1];
                 cell.appendChild(input);
             }
         }
-        tensorOutput.appendChild(table);
     }
 </script>
 

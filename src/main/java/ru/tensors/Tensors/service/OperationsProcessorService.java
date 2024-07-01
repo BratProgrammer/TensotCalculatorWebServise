@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.tensors.Tensors.controllers.data_classes.BinOperationTensorsRequest;
 import ru.tensors.Tensors.controllers.data_classes.ResultResponse;
+import ru.tensors.Tensors.controllers.data_classes.UnaryOperationTensorRequest;
 import ru.tensors.Tensors.models.Tensor;
 
 @Service
@@ -376,6 +377,19 @@ public class OperationsProcessorService {
         double[] resultTensorElements = convertTensorToArray(operations.subtraction(tensor1, tensor2));
 
         return new ResultResponse(tensor1.getRank(), tensor1.getDimension(), resultTensorElements);
+    }
+
+    public ResultResponse symmetrize(UnaryOperationTensorRequest requestData) {
+        Tensor tensor = convertArrayToTensor(
+                requestData.getRank(),
+                requestData.getDimension(),
+                requestData.getTensorElements()
+        );
+
+        Tensor symTensor = operations.symmetrize(tensor);
+        double[] symTensorElements = convertTensorToArray(symTensor);
+
+        return new ResultResponse(symTensor.getRank(), symTensor.getDimension(), symTensorElements);
     }
 
 }

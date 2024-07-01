@@ -18,25 +18,22 @@ public class Controller {
     OperationsProcessorService service;
 
     @PostMapping("/unary_operation/symmetrize")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void symmetrizeOperationMapping(@Valid @RequestBody UnaryOperationTensorRequest request) {
-        //TODO
+    public ResultResponse symmetrizeOperationMapping(@RequestBody UnaryOperationTensorRequest request) {
+        return service.symmetrize(request);
     }
 
-    @PostMapping("/unary_operation/a_symmetrize")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void a_symmetrizeOperationMapping(@Valid @RequestBody UnaryOperationTensorRequest request) {
+    @PostMapping("/unary_operation/asymmetrize")
+    public void a_symmetrizeOperationMapping(@RequestBody UnaryOperationTensorRequest request) {
         //TODO
     }
 
     @PostMapping("/binary_operation/plus")
-    public ResultResponse plusOperationMapping(@Valid @RequestBody BinOperationTensorsRequest request) throws Exception {
+    public ResultResponse plusOperationMapping(@RequestBody BinOperationTensorsRequest request) throws Exception {
         return service.plus(request);
     }
 
     @PostMapping("/binary_operation/minus")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResultResponse minusOperationMapping(@Valid @RequestBody BinOperationTensorsRequest request) throws Exception {
+    public ResultResponse minusOperationMapping(@RequestBody BinOperationTensorsRequest request) throws Exception {
         return service.minus(request);
     }
 }
