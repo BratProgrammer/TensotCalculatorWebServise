@@ -1,8 +1,6 @@
 package ru.tensors.Tensors.controllers;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.tensors.Tensors.controllers.data_classes.BinOperationTensorsRequest;
@@ -23,8 +21,8 @@ public class Controller {
     }
 
     @PostMapping("/unary_operation/asymmetrize")
-    public void a_symmetrizeOperationMapping(@RequestBody UnaryOperationTensorRequest request) {
-        //TODO
+    public ResultResponse a_symmetrizeOperationMapping(@RequestBody UnaryOperationTensorRequest request) {
+        return service.asymmetrize(request);
     }
 
     @PostMapping("/binary_operation/plus")
@@ -35,6 +33,11 @@ public class Controller {
     @PostMapping("/binary_operation/minus")
     public ResultResponse minusOperationMapping(@RequestBody BinOperationTensorsRequest request) throws Exception {
         return service.minus(request);
+    }
+
+    @PostMapping("/binary_operation/multiply")
+    public ResultResponse multiplyOperationMapping(@RequestBody BinOperationTensorsRequest request) throws Exception {
+        return service.multiply(request);
     }
 }
 

@@ -350,12 +350,12 @@ public class OperationsProcessorService {
     public ResultResponse plus(BinOperationTensorsRequest requestData) throws Exception {
         Tensor tensor1 = convertArrayToTensor(
                 requestData.getRankOfTensor1(),
-                requestData.getDimensionOfTensor1(),
+                requestData.getDimension(),
                 requestData.getElementsOfTensor1());
 
         Tensor tensor2 = convertArrayToTensor(
                 requestData.getRankOfTensor2(),
-                requestData.getDimensionOfTensor2(),
+                requestData.getDimension(),
                 requestData.getElementsOfTensor2());
 
         double[] resultTensorElements = convertTensorToArray(operations.sum(tensor1, tensor2));
@@ -366,17 +366,40 @@ public class OperationsProcessorService {
     public ResultResponse minus(BinOperationTensorsRequest requestData) throws Exception {
         Tensor tensor1 = convertArrayToTensor(
                 requestData.getRankOfTensor1(),
-                requestData.getDimensionOfTensor1(),
+                requestData.getDimension(),
                 requestData.getElementsOfTensor1());
 
         Tensor tensor2 = convertArrayToTensor(
                 requestData.getRankOfTensor2(),
-                requestData.getDimensionOfTensor2(),
+                requestData.getDimension(),
                 requestData.getElementsOfTensor2());
 
         double[] resultTensorElements = convertTensorToArray(operations.subtraction(tensor1, tensor2));
 
         return new ResultResponse(tensor1.getRank(), tensor1.getDimension(), resultTensorElements);
+    }
+
+    public ResultResponse multiply(BinOperationTensorsRequest requestData) throws Exception {
+        Tensor tensor1 = convertArrayToTensor(
+                requestData.getRankOfTensor1(),
+                requestData.getDimension(),
+                requestData.getElementsOfTensor1());
+
+        Tensor tensor2 = convertArrayToTensor(
+                requestData.getRankOfTensor2(),
+                requestData.getDimension(),
+                requestData.getElementsOfTensor2());
+
+        if (tensor1.getRank() + tensor2.getRank() <= 6) {
+            Tensor resultTensor = operations.multiply(tensor1, tensor2);
+            double[] resultTensorElements = convertTensorToArray(resultTensor);
+
+            return new ResultResponse(resultTensor.getRank(), resultTensor.getDimension(), resultTensorElements);
+        } else {
+            throw new Exception("Result tensor rank cannot be more than 6\n");
+        }
+
+
     }
 
     public ResultResponse symmetrize(UnaryOperationTensorRequest requestData) {
@@ -392,4 +415,16 @@ public class OperationsProcessorService {
         return new ResultResponse(symTensor.getRank(), symTensor.getDimension(), symTensorElements);
     }
 
+    public ResultResponse asymmetrize(UnaryOperationTensorRequest requestData) {
+        Tensor tensor = convertArrayToTensor(
+                requestData.getRank(),
+                requestData.getDimension(),
+                requestData.getTensorElements()
+        );
+
+        Tensor symTensor = operations.asymmetrize(tensor);
+        double[] symTensorElements = convertTensorToArray(symTensor);
+
+        return new ResultResponse(symTensor.getRank(), symTensor.getDimension(), symTensorElements);
+    }
 }

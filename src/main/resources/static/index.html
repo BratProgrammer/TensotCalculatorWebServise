@@ -1,23 +1,91 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tensor Input Interface</title>
     <style>
+        body {
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            color: #000000;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-size: 18px;
+        }
+
+        input[type="number"], input[type="text"] {
+            width: 50px;
+            padding: 10px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            text-align: center;
+        }
+
+        button {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            color: #333;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .flex-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .flex-item {
+            margin: 0 5px;
+            font-size: 18px;
+        }
+
         table {
             border-collapse: collapse;
+            margin: 20px auto;
         }
-        table, th, td {
-            border: 1px solid black;
-            padding: 5px;
+
+        th, td {
+            font-size: 18px;
         }
+
         th {
             background-color: #f2f2f2;
         }
-        input {
-            width: 50px;
+
+        #tensorOutput h2 {
+            margin-top: 40px;
         }
+
+        /* Additional styles for table inputs */
+        table input[type="text"] {
+            width: 30px; /* Smaller width */
+            padding: 5px; /* Smaller padding */
+            font-size: 14px; /* Smaller font size */
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            text-align: center;
+            resize: none; /* Make input non-resizable */
+        }
+
     </style>
 </head>
 <body>
@@ -25,54 +93,86 @@
 <h2>Tensor Input Interface</h2>
 
 <div>
-    <label for="t1_rank">Ранг тензора:</label>
-    <input type="number" id="t1_rank" min="1" aria-valuemax="6" max="6" value="2">
+    <label for="dimension">Размерность пространства:</label>
+    <input type="number" id="dimension" min="1" value="3">
 </div>
 
+<h2>Тензор 1</h2>
+
 <div>
-    <label for="t1_dimension">Размерность пространства:</label>
-    <input type="number" id="t1_dimension" min="1" value="3">
+    <label for="t1_rank">Ранг тензора:</label>
+    <input type="number" id="t1_rank" min="1" aria-valuemax="6" max="6" value="2">
 </div>
 
 <button onclick="createTensor1()">Создать тензор</button>
 
 <div id="tensorInput1">
-    <table id="tensorTable1"></table>
+    <div>
+        <span class="flex-container">
+            <span class="flex-item" id="t1_name">A</span>
+            <sub class="flex-item" id="t1_indexes"></sub>
+            <span class="flex-item"> = </span>
+            <table class="flex-item" id="tensorTable1"></table>
+        </span>
+
+    </div>
 </div>
 
-<div id="bin_operations_div">
-    <button onclick="plus()">+</button>
-    <button onclick="minus()">-</button>
-    <button>*</button>
-</div>
+<h2>Тензор 2</h2>
 
 <div>
     <label for="t2_rank">Ранг тензора:</label>
     <input type="number" id="t2_rank" min="1" aria-valuemax="6" max="6" value="2">
 </div>
 
-<div>
-    <label for="t2_dimension">Размерность пространства:</label>
-    <input type="number" id="t2_dimension" min="1" value="3">
-</div>
-
 <button onclick="createTensor2()">Создать тензор</button>
 
 <div id="tensorInput2">
-    <table id="tensorTable2"></table>
+    <div>
+        <span class="flex-container">
+            <span class="flex-item" id="t2_name">B</span>
+            <sub class="flex-item" id="t2_indexes"></sub>
+            <span class="flex-item"> = </span>
+            <table class="flex-item" id="tensorTable2"></table>
+        </span>
+    </div>
+</div>
+
+<h2>Операции</h2>
+
+<div id="unary_operations_div">
+    <button onclick="symmetrize()">Sym (Тензор 1)</button>
+    <button onclick="asymmetrize()">Asym (Тензор 1)</button>
+</div>
+
+<div id="bin_operations_div">
+    <button onclick="plus()">+</button>
+    <button onclick="minus()">-</button>
+    <button onclick="multiply()">*</button>
 </div>
 
 <h2>=</h2>
 
 <div id="tensorOutput">
-    <table id="tensorOutputTable"></table>
+    <div>
+        <span class="flex-container">
+            <span class="flex-item" id="t_out_name">C</span>
+            <sub class="flex-item" id="t_out_indexes"></sub>
+            <span class="flex-item"> = </span>
+            <table class="flex-item" id="tensorOutputTable"></table>
+        </span>
+    </div>
 </div>
 
 <script>
 
     function createTensor1() {
         var rank = parseInt(document.getElementById('t1_rank').value);
-        var dimension = parseInt(document.getElementById('t1_dimension').value);
+        var dimension = parseInt(document.getElementById('dimension').value);
+
+        document.getElementById('t1_name').style.display = "block";
+        document.getElementById('t1_indexes').style.display = "block";
+        document.getElementById('t1_indexes').textContent = "ijklmn".slice(0, rank);
 
         var table = document.getElementById('tensorTable1');
         table.innerHTML = '';
@@ -111,7 +211,11 @@
 
     function createTensor2() {
         var rank = parseInt(document.getElementById('t2_rank').value);
-        var dimension = parseInt(document.getElementById('t2_dimension').value);
+        var dimension = parseInt(document.getElementById('dimension').value);
+
+        document.getElementById('t2_name').style.display = "block";
+        document.getElementById('t2_indexes').style.display = "block";
+        document.getElementById('t2_indexes').textContent = "xyzwfh".slice(0, rank);
 
         table = document.getElementById('tensorTable2');
         table.innerHTML = '';
@@ -150,11 +254,10 @@
 
     function plus() {
         var t1_rank = parseInt(document.getElementById('t1_rank').value);
-        var t1_dimension = parseInt(document.getElementById('t1_dimension').value);
+        var dimension = parseInt(document.getElementById('dimension').value);
         var t2_rank = parseInt(document.getElementById('t2_rank').value);
-        var t2_dimension = parseInt(document.getElementById('t2_dimension').value);
 
-        if (t1_rank == t2_rank && t1_dimension == t2_dimension) {
+        if (t1_rank == t2_rank) {
 
             var xhr = new XMLHttpRequest();
             var url = "http://localhost:8080/api/v1/tensors/binary_operation/plus";
@@ -167,6 +270,9 @@
                     alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
                 } else { // если всё прошло гладко, выводим результат
                     setResult(JSON.parse(xhr.response));
+                    document.getElementById('t_out_name').style.display = "block";
+                    document.getElementById('t_out_indexes').style.display = "block";
+                    document.getElementById('t_out_indexes').textContent = "ijklmn".slice(0, rank);
                 }
             }
 
@@ -178,13 +284,10 @@
 
     function minus() {
         var t1_rank = parseInt(document.getElementById('t1_rank').value);
-        var t1_dimension = parseInt(document.getElementById('t1_dimension').value);
+        var dimension = parseInt(document.getElementById('dimension').value);
         var t2_rank = parseInt(document.getElementById('t2_rank').value);
-        var t2_dimension = parseInt(document.getElementById('t2_dimension').value);
 
-        if (t1_rank == t2_rank && t1_dimension == t2_dimension) {
-
-
+        if (t1_rank == t2_rank) {
             var xhr = new XMLHttpRequest();
             var url = "http://localhost:8080/api/v1/tensors/binary_operation/minus";
 
@@ -196,6 +299,9 @@
                     alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
                 } else { // если всё прошло гладко, выводим результат
                     setResult(JSON.parse(xhr.response));
+                    document.getElementById('t_out_name').style.display = "block";
+                    document.getElementById('t_out_indexes').style.display = "block";
+                    document.getElementById('t_out_indexes').textContent = "ijklmn".slice(0, rank);
                 }
             }
 
@@ -206,7 +312,32 @@
     }
 
     function multiply() {
-        //TODO
+        var t1_rank = parseInt(document.getElementById('t1_rank').value);
+        var t2_rank = parseInt(document.getElementById('t2_rank').value);
+
+        if (t1_rank + t2_rank <= 6) {
+            var xhr = new XMLHttpRequest();
+            var url = "http://localhost:8080/api/v1/tensors/binary_operation/multiply";
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.onload = function() {
+                if (xhr.status != 200) { // анализируем HTTP-статус ответа, если статус не 200, то произошла ошибка
+                    alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
+                } else { // если всё прошло гладко, выводим результат
+                    setResult(JSON.parse(xhr.response));
+                    document.getElementById('t_out_name').style.display = "block";
+                    document.getElementById('t_out_indexes').style.display = "block";
+                    document.getElementById('t_out_indexes').textContent = "ijklmn".slice(0, t1_rank) + "xyzwfh".slice(0, t2_rank);
+                }
+            }
+            var reqestBody = getBinReqestJsonData();
+
+            xhr.send(reqestBody);
+        } else {
+            alert('Сумма рангов тензоров при умножении не должна превышать 6');
+        }
     }
 
     function symmetrize() {
@@ -221,6 +352,9 @@
                 alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
             } else { // если всё прошло гладко, выводим результат
                 setResult(JSON.parse(xhr.response));
+                document.getElementById('t_out_name').style.display = "block";
+                document.getElementById('t_out_indexes').style.display = "block";
+                document.getElementById('t_out_indexes').textContent = "ijklmn".slice(0, rank);
             }
         }
 
@@ -230,27 +364,46 @@
     }
 
     function asymmetrize() {
-        //TODO
+        var xhr = new XMLHttpRequest();
+        var url = "http://localhost:8080/api/v1/tensors/unary_operation/asymmetrize";
+
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onload = function() {
+            if (xhr.status != 200) { // анализируем HTTP-статус ответа, если статус не 200, то произошла ошибка
+                alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
+            } else { // если всё прошло гладко, выводим результат
+                setResult(JSON.parse(xhr.response));
+                document.getElementById('t_out_name').style.display = "block";
+                document.getElementById('t_out_indexes').style.display = "block";
+                document.getElementById('t_out_indexes').textContent = "ijklmn".slice(0, rank);
+            }
+        }
+
+        var reqestBody = getUnaryReqestJsonData();
+
+        xhr.send(reqestBody);
     }
 
     function getBinReqestJsonData() {
         var t1_rank = parseInt(document.getElementById('t1_rank').value);
-        var t1_dimension = parseInt(document.getElementById('t1_dimension').value);
+        var dimension = parseInt(document.getElementById('dimension').value);
         var t2_rank = parseInt(document.getElementById('t2_rank').value);
-        var t2_dimension = parseInt(document.getElementById('t2_dimension').value);
 
-        var countOfElements = Math.pow(t1_dimension, t1_rank);
+        var countOfElementsInTensor1 = Math.pow(dimension, t1_rank);
+        var countOfElementsInTensor2 = Math.pow(dimension, t2_rank);
 
         let tensor1_elements = [];
         let tensor2_elements = [];
 
-        for (var id = 1; id <= countOfElements; id++) {
+        for (var id = 1; id <= countOfElementsInTensor1; id++) {
             var str_id = 't1_element_' + id;
             var element = parseFloat(document.getElementById(str_id).value);
             tensor1_elements.push(element);
         }
 
-        for (var id = 1; id <= countOfElements; id++) {
+        for (var id = 1; id <= countOfElementsInTensor2; id++) {
             var str_id = 't2_element_' + id;
             var element = parseFloat(document.getElementById(str_id).value);
             tensor2_elements.push(element);
@@ -258,9 +411,8 @@
 
         var reqestBody = JSON.stringify({
             "rankOfTensor1": t1_rank,
-            "dimensionOfTensor1": t1_dimension,
+            "dimension": dimension,
             "rankOfTensor2": t2_rank,
-            "dimensionOfTensor2": t2_dimension,
             "elementsOfTensor1": tensor1_elements,
             "elementsOfTensor2": tensor2_elements
         });
@@ -270,8 +422,8 @@
 
     function getUnaryReqestJsonData() {
         var t1_rank = parseInt(document.getElementById('t1_rank').value);
-        var t1_dimension = parseInt(document.getElementById('t1_dimension').value);
-        var countOfElements = Math.pow(t1_dimension, t1_rank);
+        var dimension = parseInt(document.getElementById('dimension').value);
+        var countOfElements = Math.pow(dimension, t1_rank);
 
         let tensor1_elements = [];
 
@@ -283,7 +435,7 @@
 
         var reqestBody = JSON.stringify({
             "rank": t1_rank,
-            "dimension": t1_dimension,
+            "dimension": dimension,
             "tensorElements": tensor1_elements
         });
 
@@ -332,6 +484,5 @@
         }
     }
 </script>
-
 </body>
 </html>
