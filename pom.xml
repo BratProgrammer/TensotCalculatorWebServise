@@ -9,7 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ru.tensors</groupId>
-	<artifactId>Tensors</artifactId>
+	<packaging>jar</packaging>
+	<artifactId>tensors</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Tensors</name>
 	<description>Demo project for Spring Boot</description>
@@ -71,6 +72,7 @@
 	</dependencies>
 
 	<build>
+		<defaultGoal>package</defaultGoal>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

@@ -38,8 +38,6 @@ public class Tensor {
         return rank;
     }
 
-
-
     public double getElement(int[] coordinates) {
         int coordinateIndex = 0;
         ArrayList pathOfTensorMatrix = tensorMatrix;
