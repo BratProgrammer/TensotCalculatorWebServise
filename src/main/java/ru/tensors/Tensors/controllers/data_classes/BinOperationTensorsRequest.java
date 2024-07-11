@@ -7,6 +7,7 @@ import lombok.Data;
 // TODO Заресёрчить проикол с @Data
 @Data
 public class BinOperationTensorsRequest {
+    private String operation;
     private int dimension;
     private int rankOfTensor1;
     private int rankOfTensor2;

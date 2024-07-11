@@ -1,11 +1,11 @@
 package ru.tensors.Tensors.service;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import ru.tensors.Tensors.models.Tensor;
 
 import java.util.Arrays;
 
-@Repository
+@Component
 public class OperationsWithTensors {
 
     int factorial(int number) {
@@ -58,7 +58,7 @@ public class OperationsWithTensors {
             var result = new Tensor(tensor1.getRank(), tensor1.getDimension());
 
             int[] coordinates = new int[tensor1.getRank()];
-            int countOfElements = result.getDimension() ^ result.getRank();
+            int countOfElements = (int) Math.pow(result.getDimension(), result.getRank());
 
             for (int i = 0; i < countOfElements; i++) {
                 result.setElement(tensor1.getElement(coordinates) - tensor2.getElement(coordinates), coordinates);

@@ -15,29 +15,14 @@ public class Controller {
     @Autowired
     OperationsProcessorService service;
 
-    @PostMapping("/unary_operation/symmetrize")
-    public ResultResponse symmetrizeOperationMapping(@RequestBody UnaryOperationTensorRequest request) {
-        return service.symmetrize(request);
+    @PostMapping("/unary_operation")
+    public ResultResponse unaryOperationMapping(@RequestBody UnaryOperationTensorRequest request) {
+        return service.processUnaryOperation(request);
     }
 
-    @PostMapping("/unary_operation/asymmetrize")
-    public ResultResponse a_symmetrizeOperationMapping(@RequestBody UnaryOperationTensorRequest request) {
-        return service.asymmetrize(request);
-    }
-
-    @PostMapping("/binary_operation/plus")
-    public ResultResponse plusOperationMapping(@RequestBody BinOperationTensorsRequest request) throws Exception {
-        return service.plus(request);
-    }
-
-    @PostMapping("/binary_operation/minus")
-    public ResultResponse minusOperationMapping(@RequestBody BinOperationTensorsRequest request) throws Exception {
-        return service.minus(request);
-    }
-
-    @PostMapping("/binary_operation/multiply")
-    public ResultResponse multiplyOperationMapping(@RequestBody BinOperationTensorsRequest request) throws Exception {
-        return service.multiply(request);
+    @PostMapping("/binary_operation")
+    public ResultResponse binOperationMapping(@RequestBody BinOperationTensorsRequest request) throws Exception {
+        return service.processBinOperation(request);
     }
 }
 
