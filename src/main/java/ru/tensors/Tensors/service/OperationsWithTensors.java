@@ -6,7 +6,7 @@ import ru.tensors.Tensors.models.Tensor;
 import java.util.Arrays;
 
 @Component
-public class OperationsWithTensors {
+public class OperationsWithTensors implements IOperationsWithTensors {
 
     int factorial(int number) {
         int result = 1;

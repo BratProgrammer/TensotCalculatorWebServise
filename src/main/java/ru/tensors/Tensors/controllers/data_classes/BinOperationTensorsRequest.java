@@ -4,7 +4,6 @@ package ru.tensors.Tensors.controllers.data_classes;
 
 import lombok.Data;
 
-// TODO Заресёрчить проикол с @Data
 @Data
 public class BinOperationTensorsRequest {
     private String operation;

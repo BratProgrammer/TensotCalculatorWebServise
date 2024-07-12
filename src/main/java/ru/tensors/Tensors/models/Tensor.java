@@ -48,7 +48,6 @@ public class Tensor {
         return (double) pathOfTensorMatrix.get(coordinates[coordinateIndex]);
     }
 
-
     public void setElement(double value, int[] coordinates) {
         int coordinateIndex = 0;
         ArrayList pathOfTensorMatrix = tensorMatrix;

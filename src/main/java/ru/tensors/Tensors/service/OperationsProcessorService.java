@@ -10,11 +10,11 @@ import ru.tensors.Tensors.models.Tensor;
 import java.util.Objects;
 
 @Service
-public class OperationsProcessorService {
+public class OperationsProcessorService implements IOperationProcessorService {
     @Autowired
-    private OperationsWithTensors operations;
+    private IOperationsWithTensors operations;
 
-    public ResultResponse processUnaryOperation(UnaryOperationTensorRequest requestData) {
+    public ResultResponse processUnaryOperation(UnaryOperationTensorRequest requestData) throws Exception {
         Tensor tensor = convertArrayToTensor(
                 requestData.getRank(),
                 requestData.getDimension(),
@@ -403,13 +403,13 @@ public class OperationsProcessorService {
         }
     }
 
-    public ResultResponse symmetrize(Tensor tensor) {
+    public ResultResponse symmetrize(Tensor tensor) throws Exception {
         Tensor symTensor = operations.symmetrize(tensor);
         double[] symTensorElements = convertTensorToArray(symTensor);
         return new ResultResponse(symTensor.getRank(), symTensor.getDimension(), symTensorElements);
     }
 
-    public ResultResponse asymmetrize(Tensor tensor) {
+    public ResultResponse asymmetrize(Tensor tensor) throws Exception {
         Tensor symTensor = operations.asymmetrize(tensor);
         double[] symTensorElements = convertTensorToArray(symTensor);
         return new ResultResponse(symTensor.getRank(), symTensor.getDimension(), symTensorElements);

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.tensors.Tensors.controllers.data_classes.BinOperationTensorsRequest;
 import ru.tensors.Tensors.controllers.data_classes.ResultResponse;
 import ru.tensors.Tensors.controllers.data_classes.UnaryOperationTensorRequest;
+import ru.tensors.Tensors.service.IOperationProcessorService;
 import ru.tensors.Tensors.service.OperationsProcessorService;
 
 @RestController
@@ -14,10 +15,10 @@ import ru.tensors.Tensors.service.OperationsProcessorService;
 @RequestMapping("/api/v1/tensors")
 public class Controller {
     @Autowired
-    OperationsProcessorService service;
+    IOperationProcessorService service;
 
     @PostMapping("/unary_operation")
-    public ResponseEntity<ResultResponse> unaryOperationMapping(@RequestBody UnaryOperationTensorRequest request) {
+    public ResponseEntity<ResultResponse> unaryOperationMapping(@RequestBody UnaryOperationTensorRequest request) throws Exception {
         return ResponseEntity.ok(service.processUnaryOperation(request));
     }
 
