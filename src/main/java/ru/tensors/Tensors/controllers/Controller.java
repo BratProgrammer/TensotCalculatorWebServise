@@ -1,6 +1,7 @@
 package ru.tensors.Tensors.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.tensors.Tensors.controllers.data_classes.BinOperationTensorsRequest;
@@ -16,13 +17,13 @@ public class Controller {
     OperationsProcessorService service;
 
     @PostMapping("/unary_operation")
-    public ResultResponse unaryOperationMapping(@RequestBody UnaryOperationTensorRequest request) {
-        return service.processUnaryOperation(request);
+    public ResponseEntity<ResultResponse> unaryOperationMapping(@RequestBody UnaryOperationTensorRequest request) {
+        return ResponseEntity.ok(service.processUnaryOperation(request));
     }
 
     @PostMapping("/binary_operation")
-    public ResultResponse binOperationMapping(@RequestBody BinOperationTensorsRequest request) throws Exception {
-        return service.processBinOperation(request);
+    public ResponseEntity<ResultResponse> binOperationMapping(@RequestBody BinOperationTensorsRequest request) throws Exception {
+        return ResponseEntity.ok(service.processBinOperation(request));
     }
 }
 
