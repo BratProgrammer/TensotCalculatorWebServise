@@ -4,18 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.tensors.Tensors.controllers.data_classes.BinOperationTensorsRequest;
-import ru.tensors.Tensors.controllers.data_classes.ResultResponse;
-import ru.tensors.Tensors.controllers.data_classes.UnaryOperationTensorRequest;
-import ru.tensors.Tensors.service.IOperationProcessorService;
-import ru.tensors.Tensors.service.OperationsProcessorService;
+import ru.tensors.Tensors.DAO.BinOperationTensorsRequest;
+import ru.tensors.Tensors.DAO.ResultResponse;
+import ru.tensors.Tensors.DAO.UnaryOperationTensorRequest;
+import ru.tensors.Tensors.services.OperationProcessor;
 
 @RestController
 @Validated
 @RequestMapping("/api/v1/tensors")
 public class Controller {
     @Autowired
-    IOperationProcessorService service;
+    OperationProcessor service;
 
     @PostMapping("/unary_operation")
     public ResponseEntity<ResultResponse> unaryOperationMapping(@RequestBody UnaryOperationTensorRequest request) throws Exception {

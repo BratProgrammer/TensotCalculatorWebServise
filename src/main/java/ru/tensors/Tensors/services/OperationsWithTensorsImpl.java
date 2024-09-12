@@ -1,4 +1,4 @@
-package ru.tensors.Tensors.service;
+package ru.tensors.Tensors.services;
 
 import org.springframework.stereotype.Component;
 import ru.tensors.Tensors.models.Tensor;
@@ -6,7 +6,7 @@ import ru.tensors.Tensors.models.Tensor;
 import java.util.Arrays;
 
 @Component
-public class OperationsWithTensors implements IOperationsWithTensors {
+public class OperationsWithTensorsImpl implements OperationsWithTensors {
 
     int factorial(int number) {
         int result = 1;

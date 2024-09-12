@@ -1,4 +1,4 @@
-package ru.tensors.Tensors.controllers.data_classes;
+package ru.tensors.Tensors.DAO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

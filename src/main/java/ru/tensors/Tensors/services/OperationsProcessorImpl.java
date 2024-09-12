@@ -1,18 +1,18 @@
-package ru.tensors.Tensors.service;
+package ru.tensors.Tensors.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.tensors.Tensors.controllers.data_classes.BinOperationTensorsRequest;
-import ru.tensors.Tensors.controllers.data_classes.ResultResponse;
-import ru.tensors.Tensors.controllers.data_classes.UnaryOperationTensorRequest;
+import ru.tensors.Tensors.DAO.BinOperationTensorsRequest;
+import ru.tensors.Tensors.DAO.ResultResponse;
+import ru.tensors.Tensors.DAO.UnaryOperationTensorRequest;
 import ru.tensors.Tensors.models.Tensor;
 
 import java.util.Objects;
 
 @Service
-public class OperationsProcessorService implements IOperationProcessorService {
+public class OperationsProcessorImpl implements OperationProcessor {
     @Autowired
-    private IOperationsWithTensors operations;
+    private OperationsWithTensors operations;
 
     public ResultResponse processUnaryOperation(UnaryOperationTensorRequest requestData) throws Exception {
         Tensor tensor = convertArrayToTensor(
